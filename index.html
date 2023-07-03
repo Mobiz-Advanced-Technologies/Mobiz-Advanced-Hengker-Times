@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mobiz-Advanced-Hengker-Times</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font: 1.3rem Inconsolata, monospace;
+    } div {
+        padding: 10px;
+        text-align: left;
+        margin-top: 20px;
+        background: green;
+    } #container, #loader {
+        margin: auto;
+        max-width: calc(100vw - 50px);
+    } html {
+    	background: black;
+    } #header {
+        background: green;
+        padding: 10px;
+    } a {
+    	color: black;
+    } span {
+    	padding: 2.5px;
+    	background: black;
+    	margin-left: 5px;
+        animation: blinker 1s linear infinite;
+    } @keyframes blinker {
+      50% {
+        opacity: 0;
+      }
+    } h4 {
+    	display: inline;
+        font-weight: bolder;
+    } h3 {
+        font-weight: bolder;
+    }
+</style>
+</head>
+<body>
+
+<center id="header">
+	<h3>Mobiz-Advanced-Hengker-Times<span></span></h3>
+</center>
+
+<center id="container">
+
+</center>
+
+<center id="loader">
+    <br><progress></progress><br>
+</center>
+
+<script>
+let loadedmemes = []
+
+async function fetchMemes() {
+ let response = await fetch('https://hacker-news.firebaseio.com/v0/item/' + Math.floor(Math.random() * 100000) + ".json");
+ let jsonData = await response.json();
+ let container = document.getElementById('container');
+ 
+ if (jsonData.type != "story") {fetchMemes(); return 0}
+
+ let div = document.createElement('div')
+ div.innerHTML = `
+    <a href="${jsonData.url}"><h4>${jsonData.title}</h4></a><span></span><br>
+    ${jsonData.by}
+ `
+ container.appendChild(div)
+}
+
+for (let i = 0; i < 10; i++) {
+  fetchMemes()
+}
+
+document.addEventListener('DOMContentLoaded', function(e) {
+    document.addEventListener('scroll', function(e) {
+        let documentHeight = document.body.scrollHeight;
+        let currentScroll = window.scrollY + window.innerHeight;
+        let modifier = 200; 
+        if(currentScroll + modifier > documentHeight) {
+	fetchMemes()
+        }
+    })
+})
+</script>
+
+</body>
+</html>
